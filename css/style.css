@@ -110,7 +110,7 @@ header {
 /*ロゴ*/
 header #logo img {
 	display: block;
-	width: 300px;   /* 好きなサイズに変更 */
+	width: 400px;   /* 好きなサイズに変更 */
 	height: auto;   /* 縦横比を維持 */
 }
 header #logo {
