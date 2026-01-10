@@ -73,6 +73,7 @@ body {
     .close {
       margin-top: 10px;
       cursor: pointer;
+      color: black;
     }
 
 
@@ -159,24 +160,18 @@ body {
 
 <!--↓自作↓-->
 <script>
-  const SPREADSHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQA1Vl-e1a9BzMLw2UAIRq1bUEEUT418hEy7CXTiq2T6c-NJWDbcqOcubx_ZfPLpP0jnv1udPXudrf0/pub?output=csv";
+  const SHEET_JSON_URL = "https://opensheet.elk.sh/1THlcb3J5R5cgcm5OSZJ958Xn6vbjfL3UfYPTk9x7lAg/シート1";
 
-  let comments = {};
+ let comments = {};
 
-  // CSV読み込み
-  fetch(SPREADSHEET_CSV_URL)
-    .then(res => res.text())
-    .then(text => {
-      const rows = text.split("\n").slice(1);
-      rows.forEach(row => {
-        const [image, comment] = row.split(",");
-        if (image && comment) {
-          comments[image.trim()] = comment.trim();
-        }
+  fetch(SHEET_JSON_URL)
+    .then(res => res.json())
+    .then(data => {
+      data.forEach(row => {
+        comments[row.image] = row.comment;
       });
     });
 
-  // 画像クリック
   document.querySelectorAll(".gallery img").forEach(img => {
     img.addEventListener("click", () => {
       const imageName = img.dataset.image;
@@ -190,6 +185,9 @@ body {
   function closeModal() {
     document.getElementById("modal").style.display = "none";
   }
+
+
+
 </script>
 <!--↑自作↑-->
 
