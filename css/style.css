@@ -108,7 +108,11 @@ header {
 }
 
 /*ロゴ*/
-header #logo img {display: block;}
+header #logo img {
+	display: block;
+	width: 300px;   /* 好きなサイズに変更 */
+	height: auto;   /* 縦横比を維持 */
+}
 header #logo {
 	padding: 0;margin: 0;
 }
