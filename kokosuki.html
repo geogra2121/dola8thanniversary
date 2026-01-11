@@ -22,17 +22,19 @@
     text-align: center;
   }
       /* 画像一覧 */
-      .gallery {
-    display: flex;
-    flex-direction: column; /* 縦並び */
-    gap: 10px;
-      }
+.gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center; /* 中央寄せ */
+}
   
       .gallery img {
         width: 100%;
         cursor: pointer;
         border-radius: 6px;
         transition: transform 0.2s;
+        max-width: 600px; /* 横幅制限 */
       }
   
       .gallery img:hover {
@@ -129,26 +131,28 @@
   </header>
   <main>
     <!--↓自作↓-->
-    <h1>ドーラ様の衣装のここが好き</h1>
-    <div class="gallery">
-      <img src="images/costume/001.jpg" data-image="001.jpg">
-      <img src="images/costume/002.jpg" data-image="002.jpg">
-      <img src="images/costume/003.jpg" data-image="003.jpg">
-      <img src="images/costume/004.jpg" data-image="004.jpg">
-      <img src="images/costume/005.jpg" data-image="005.jpg">
-      <img src="images/costume/006.jpg" data-image="006.jpg">
-      <img src="images/costume/007.jpg" data-image="007.jpg">
-      <img src="images/costume/008.jpg" data-image="008.jpg">
-    </div>
-    <!-- モーダル -->
-    <div class="modal" id="modal">
-      <div class="modal-content">
-        <img id="modalImage">
-        <div class="comment" id="modalComment">
-        </div>
-        <div class="close" onclick="closeModal()">閉じる</div>
+    <section id="section1" class="section">
+      <h1>ドーラ様の衣装のここが好き</h1>
+      <div class="gallery">
+        <img src="images/costume/001.jpg" data-image="001.jpg">
+        <img src="images/costume/002.jpg" data-image="002.jpg">
+        <img src="images/costume/003.jpg" data-image="003.jpg">
+        <img src="images/costume/004.jpg" data-image="004.jpg">
+        <img src="images/costume/005.jpg" data-image="005.jpg">
+        <img src="images/costume/006.jpg" data-image="006.jpg">
+        <img src="images/costume/007.jpg" data-image="007.jpg">
+        <img src="images/costume/008.jpg" data-image="008.jpg">
       </div>
-    </div>
+      <!-- モーダル -->
+      <div class="modal" id="modal">
+        <div class="modal-content">
+          <img id="modalImage">
+          <div class="comment" id="modalComment">
+          </div>
+          <div class="close" onclick="closeModal()">閉じる</div>
+        </div>
+      </div>
+    </section>
     <!--↑自作↑-->
   </main>
   <footer>
@@ -182,30 +186,30 @@
   <!--↓自作↓-->
   <script>
   const SHEET_JSON_URL = "https://opensheet.elk.sh/1THlcb3J5R5cgcm5OSZJ958Xn6vbjfL3UfYPTk9x7lAg/シート1";
-    
-     let comments = {};
-    
-      fetch(SHEET_JSON_URL)
-        .then(res => res.json())
-        .then(data => {
-          data.forEach(row => {
-            comments[row.image] = row.comment;
+        
+         let comments = {};
+        
+          fetch(SHEET_JSON_URL)
+            .then(res => res.json())
+            .then(data => {
+              data.forEach(row => {
+                comments[row.image] = row.comment;
+              });
+            });
+        
+          document.querySelectorAll(".gallery img").forEach(img => {
+            img.addEventListener("click", () => {
+              const imageName = img.dataset.image;
+              document.getElementById("modalImage").src = img.src;
+              document.getElementById("modalComment").textContent =
+                comments[imageName] || "コメントはありません";
+              document.getElementById("modal").style.display = "flex";
+            });
           });
-        });
-    
-      document.querySelectorAll(".gallery img").forEach(img => {
-        img.addEventListener("click", () => {
-          const imageName = img.dataset.image;
-          document.getElementById("modalImage").src = img.src;
-          document.getElementById("modalComment").textContent =
-            comments[imageName] || "コメントはありません";
-          document.getElementById("modal").style.display = "flex";
-        });
-      });
-    
-      function closeModal() {
-        document.getElementById("modal").style.display = "none";
-      }
+        
+          function closeModal() {
+            document.getElementById("modal").style.display = "none";
+          }
   </script>
   <!--↑自作↑-->
 </body>
