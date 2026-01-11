@@ -226,3 +226,52 @@ $(document).ready(function () {
   // 初期チェック
   checkVisibility();
 });
+
+//===============================================================
+// GoogleMap制御用
+//===============================================================
+const sheetId = "1M78l-oqXKHgwTJw7Hi47UwzBvdEct_QHZg2_rQnImlQ";
+const sheetName = "シート1";
+const IMAGE_DIR = "images/life/";
+
+const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=${sheetName}`;
+
+fetch(url)
+  .then(res => res.text())
+  .then(text => {
+    const json = JSON.parse(text.substr(47).slice(0, -2));
+    const rows = json.table.rows;
+    initMap(rows);
+  });
+
+function initMap(rows) {
+  const map = new google.maps.Map(document.getElementById("map"), {
+    center: { lat: 35.6812, lng: 139.7671 },
+    zoom: 5
+  });
+
+  rows.forEach(row => {
+    const imageFile = row.c[0].v; // tokyo.jpg
+    const address   = row.c[1].v;
+    const lat       = row.c[2].v;
+    const lng       = row.c[3].v;
+
+    const marker = new google.maps.Marker({
+      position: { lat, lng },
+      map: map
+    });
+
+    const infoWindow = new google.maps.InfoWindow({
+      content: `
+        <div>
+          <p>${address}</p>
+          <img src="${IMAGE_DIR}${imageFile}" alt="">
+        </div>
+      `
+    });
+
+    marker.addListener("click", () => {
+      infoWindow.open(map, marker);
+    });
+  });
+}

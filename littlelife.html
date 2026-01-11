@@ -9,11 +9,19 @@
   <link rel="stylesheet" href="css/style.css">
   <!--↓自作↓-->
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>ランダム再生</title>
+  <title>全国の小さき命</title>
   <!--↑自作↑-->
 </head>
 <!--↓自作↓-->
-
+  <style>
+    #map {
+      width: 100%;
+      height: 600px;
+    }
+    img {
+      max-width: 200px;
+    }
+  </style>
 <!--↑自作↑-->
 
 <body>
@@ -68,6 +76,15 @@
   </header>
   <main>
     <!--↓自作↓-->
+    <section id="section1" class="section">
+    
+    <h2>小さき命の撮影場所</h2>
+	<div id="map"></div>
+
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDq4Gwpu6yeAN7WlBw9fu7DR9qQUe1SzcY"></script>
+	<script src="main.js"></script>
+    
+    </section>
     <!--↑自作↑-->
   </main>
   <footer>
