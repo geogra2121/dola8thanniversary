@@ -251,10 +251,11 @@ function initMap(rows) {
   });
 
   rows.forEach(row => {
-    const imageFile = row.c[0].v; // tokyo.jpg
+    const imageFile = row.c[0].v;
     const address   = row.c[1].v;
     const lat       = row.c[2].v;
     const lng       = row.c[3].v;
+    const comment   = row.c[4]?.v || ""; // ← 追加（空でも落ちない）
 
     const marker = new google.maps.Marker({
       position: { lat, lng },
@@ -263,9 +264,10 @@ function initMap(rows) {
 
     const infoWindow = new google.maps.InfoWindow({
       content: `
-        <div>
-          <p>${address}</p>
+        <div class="info">
+          <p><strong>${address}</strong></p>
           <img src="${IMAGE_DIR}${imageFile}" alt="">
+          <p class="comment">${comment}</p>
         </div>
       `
     });
