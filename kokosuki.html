@@ -14,15 +14,18 @@
 </head>
 <!--↓自作↓-->
 <style>
+  /* 全体 */
   body {
-        font-family: sans-serif;
-      }
-  
+    margin: 0;
+    padding: 16px;
+    font-family: sans-serif;
+    text-align: center;
+  }
       /* 画像一覧 */
       .gallery {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+    display: flex;
+    flex-direction: column; /* 縦並び */
+    gap: 10px;
       }
   
       .gallery img {
@@ -61,13 +64,15 @@
       }
   
       .comment {
-        margin-top: 10px;
+          margin-top: 10px;
+          color: black;
+          white-space: pre-wrap; /* ← 改行をそのまま表示 */
       }
   
       .close {
         margin-top: 10px;
         cursor: pointer;
-        color: #007bff;
+        color: black;
       }
 </style>
 <!--↑自作↑-->
@@ -124,28 +129,26 @@
   </header>
   <main>
     <!--↓自作↓-->
-    <section id="section1" class="section">
-      <h1>ドーラ様の衣装のここが好き</h1>
-      <div class="gallery">
-        <img src="images/costume/001.jpg" data-image="001.jpg">
-        <img src="images/costume/002.jpg" data-image="002.jpg">
-        <img src="images/costume/003.jpg" data-image="003.jpg">
-        <img src="images/costume/004.jpg" data-image="004.jpg">
-        <img src="images/costume/005.jpg" data-image="005.jpg">
-        <img src="images/costume/006.jpg" data-image="006.jpg">
-        <img src="images/costume/007.jpg" data-image="007.jpg">
-        <img src="images/costume/008.jpg" data-image="008.jpg">
-      </div>
-      <!-- モーダル -->
-      <div class="modal" id="modal">
-        <div class="modal-content">
-          <img id="modalImage">
-          <div class="comment" id="modalComment">
-          </div>
-          <div class="close" onclick="closeModal()">閉じる</div>
+    <h1>ドーラ様の衣装のここが好き</h1>
+    <div class="gallery">
+      <img src="images/costume/001.jpg" data-image="001.jpg">
+      <img src="images/costume/002.jpg" data-image="002.jpg">
+      <img src="images/costume/003.jpg" data-image="003.jpg">
+      <img src="images/costume/004.jpg" data-image="004.jpg">
+      <img src="images/costume/005.jpg" data-image="005.jpg">
+      <img src="images/costume/006.jpg" data-image="006.jpg">
+      <img src="images/costume/007.jpg" data-image="007.jpg">
+      <img src="images/costume/008.jpg" data-image="008.jpg">
+    </div>
+    <!-- モーダル -->
+    <div class="modal" id="modal">
+      <div class="modal-content">
+        <img id="modalImage">
+        <div class="comment" id="modalComment">
         </div>
+        <div class="close" onclick="closeModal()">閉じる</div>
       </div>
-    </section>
+    </div>
     <!--↑自作↑-->
   </main>
   <footer>
@@ -179,30 +182,30 @@
   <!--↓自作↓-->
   <script>
   const SHEET_JSON_URL = "https://opensheet.elk.sh/1THlcb3J5R5cgcm5OSZJ958Xn6vbjfL3UfYPTk9x7lAg/シート1";
-        
-         let comments = {};
-        
-          fetch(SHEET_JSON_URL)
-            .then(res => res.json())
-            .then(data => {
-              data.forEach(row => {
-                comments[row.image] = row.comment;
-              });
-            });
-        
-          document.querySelectorAll(".gallery img").forEach(img => {
-            img.addEventListener("click", () => {
-              const imageName = img.dataset.image;
-              document.getElementById("modalImage").src = img.src;
-              document.getElementById("modalComment").textContent =
-                comments[imageName] || "コメントはありません";
-              document.getElementById("modal").style.display = "flex";
-            });
+    
+     let comments = {};
+    
+      fetch(SHEET_JSON_URL)
+        .then(res => res.json())
+        .then(data => {
+          data.forEach(row => {
+            comments[row.image] = row.comment;
           });
-        
-          function closeModal() {
-            document.getElementById("modal").style.display = "none";
-          }
+        });
+    
+      document.querySelectorAll(".gallery img").forEach(img => {
+        img.addEventListener("click", () => {
+          const imageName = img.dataset.image;
+          document.getElementById("modalImage").src = img.src;
+          document.getElementById("modalComment").textContent =
+            comments[imageName] || "コメントはありません";
+          document.getElementById("modal").style.display = "flex";
+        });
+      });
+    
+      function closeModal() {
+        document.getElementById("modal").style.display = "none";
+      }
   </script>
   <!--↑自作↑-->
 </body>

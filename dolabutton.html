@@ -13,7 +13,67 @@
   <!--↑自作↑-->
 </head>
 <!--↓自作↓-->
-
+<style>
+  /* 全体 */
+  body {
+    margin: 0;
+    padding: 16px;
+    font-family: sans-serif;
+    text-align: center;
+  }
+  
+  /* コンテンツ幅（PC用） */
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  /* 動画の比率を維持（16:9） */
+  #player-wrapper {
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%; /* 16:9 */
+    margin-bottom: 16px;
+  }
+  
+  #player-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100% !important;
+    height: 100% !important;
+  }
+  
+  /* ボタン */
+  button {
+    width: 100%;
+    max-width: 300px;
+    padding: 12px;
+    font-size: 16px;
+  }
+  
+  /* 配信タイトル */
+  #clip-title {
+    font-size: 18px;
+    margin: 12px 0;
+    font-weight: bold;
+  }
+  
+  /* PCでは少し余裕を持たせる */
+  @media (min-width: 768px) {
+    button {
+      font-size: 18px;
+    }
+  }
+  
+  /* コメントの見た目調整 */
+  #clip-comment {
+    margin-top: 8px;
+    font-size: 15px;
+    margin: 12px 0;
+    font-weight: bold;
+  }
+</style>
 <!--↑自作↑-->
 
 <body>
@@ -68,7 +128,6 @@
   </header>
   <main>
     <!--↓自作↓-->
-    <section id="section1" class="section">
     <h1>ドーラ様の配信切り抜きランダム再生</h1>
     <div class="container">
       <div id="player-wrapper">
@@ -79,7 +138,6 @@
       <button onclick="playRandom()">ランダム再生</button>
       <p id="clip-comment"></p>
     </div>
-    </section>
     <!--↑自作↑-->
   </main>
   <footer>
