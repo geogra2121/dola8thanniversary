@@ -213,6 +213,7 @@ main h3 {
 	padding-top: 80px;
 	background: rgba(0,0,0,0.8);		/*背景色*/
 	animation: animation1 0.2s both;	/*animation1を実行する。0.2sは0.2秒の事。*/
+	z-index: 1000;
 }
 .small-screen #menubar ul {
 	margin: 3rem;	/*メニューブロックの外側に空けるスペース*/
