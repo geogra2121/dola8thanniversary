@@ -29,12 +29,8 @@ body { margin: 0; font-family: sans-serif; }
   top: 0px;
   background: #fff;
   z-index: 500;
-}
-
-@media screen and (max-width: 768px) {
-  #thumbnail-bar {
-    grid-template-columns: repeat(4, auto);
-  }
+  
+  background: rgba(255, 0, 0, 0.1);
 }
 
 .thumbnail {
@@ -122,13 +118,24 @@ body { margin: 0; font-family: sans-serif; }
 
 :root {
   --menubar-height: 60px;
-  --thumbnail-height: 80px; /* 1行分 */
+  --thumbnail-height: 40px; /* PC用 */
+}
+
+@media screen and (max-width: 768px) {
+  #thumbnail-bar {
+    grid-template-columns: repeat(4, auto);
+  }
+  :root {
+  --menubar-height: 60px;
+  --thumbnail-height: 80px; /* スマホ用 */
+}
 }
 
 .section {
   scroll-margin-top: calc(
     var(--menubar-height) + var(--thumbnail-height)
   );
+  outline: 2px dashed blue;
 }
 
 
