@@ -19,7 +19,8 @@ body { margin: 0; font-family: sans-serif; }
 /* サムネイル */
 #thumbnail-bar {
   display: grid;
-  grid-template-columns: repeat(8, 1fr); /* 4列 */
+  grid-template-columns: repeat(8, auto); /*一行の最大画像数*/
+  justify-content: start;
   gap: 8px;
   padding: 8px;
   border-bottom: 1px solid #ccc;
@@ -31,7 +32,7 @@ body { margin: 0; font-family: sans-serif; }
 
 @media screen and (max-width: 768px) {
   #thumbnail-bar {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(4, auto);
   }
 }
 
