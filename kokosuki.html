@@ -19,7 +19,7 @@ body {
   font-family: sans-serif;
 }
 
-/* サムネイル */
+/* 上部サムネイル */
 #thumbnail-bar {
   display: flex;
   gap: 10px;
@@ -28,10 +28,13 @@ body {
   position: sticky;
   top: 0;
   background: #fff;
+  z-index: 100;
 }
 
 #thumbnail-bar img {
-  width: 70px;
+  height: 60px;
+  width: auto;
+  object-fit: contain;
   cursor: pointer;
 }
 
@@ -59,6 +62,20 @@ body {
   height: 100%;
 }
 
+/* 注釈線 */
+.annotation polyline {
+  stroke: #888;
+  stroke-width: 2;
+  fill: none;
+  cursor: pointer;
+}
+
+.annotation polyline.active {
+  stroke: red;
+  stroke-width: 3;
+}
+
+/* コメント */
 .comments {
   width: 50%;
   padding-left: 20px;
@@ -66,6 +83,13 @@ body {
 
 .comment {
   margin-bottom: 10px;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.comment.active {
+  background: #ffecec;
+  border-left: 4px solid red;
 }
 </style>
 <!--↑自作↑-->
@@ -161,6 +185,12 @@ body {
 <script>
 const GAS_URL = "https://script.google.com/macros/s/AKfycbwmZXpP17JE9Zam3Et5eZa4-M7m7xZkYnNYr4VPp2Ym2T8bjm1LHLFCs48fdtaVUovv/exec";
 
+function clearActive() {
+  document.querySelectorAll(".active").forEach(el =>
+    el.classList.remove("active")
+  );
+}
+
 fetch(GAS_URL)
   .then(res => res.json())
   .then(sections => {
@@ -170,7 +200,7 @@ fetch(GAS_URL)
 
     sections.forEach(section => {
 
-      // サムネイル
+      /* サムネイル */
       const thumb = document.createElement("img");
       thumb.src = section.image;
       thumb.onclick = () =>
@@ -178,37 +208,54 @@ fetch(GAS_URL)
           .scrollIntoView({ behavior: "smooth" });
       thumbBar.appendChild(thumb);
 
-      // セクション
+      /* セクション */
       const sec = document.createElement("div");
       sec.className = "section";
       sec.id = section.id;
 
-      const imageHtml = `
+      /* SVG（L字折れ線） */
+      const svgLines = section.comments.map((c, i) => {
+        const key = `${section.id}-${i}`;
+        const midX = 85;
+        return `
+          <polyline
+            data-key="${key}"
+            points="${c.x},${c.y} ${midX},${c.y} ${midX},${c.y + 5}"
+          />
+        `;
+      }).join("");
+
+      /* コメント */
+      const commentHtml = section.comments.map((c, i) => {
+        const key = `${section.id}-${i}`;
+        return `<div class="comment" data-key="${key}">${c.text}</div>`;
+      }).join("");
+
+      sec.innerHTML = `
         <div class="image-wrapper">
           <img src="${section.image}">
           <svg class="annotation" viewBox="0 0 100 100" preserveAspectRatio="none">
-            ${section.comments.map(c => `
-              <polyline
-                points="${c.x},${c.y} 85,${c.y}"
-                stroke="red"
-                stroke-width="2"
-                fill="none" />
-            `).join("")}
+            ${svgLines}
           </svg>
         </div>
-      `;
-
-      const commentsHtml = `
         <div class="comments">
-          ${section.comments.map(c =>
-            `<div class="comment">${c.text}</div>`
-          ).join("")}
+          ${commentHtml}
         </div>
       `;
 
-      sec.innerHTML = imageHtml + commentsHtml;
       content.appendChild(sec);
     });
+
+    /* クリック連動処理 */
+    document.querySelectorAll(".comment, .annotation polyline")
+      .forEach(el => {
+        el.addEventListener("click", () => {
+          clearActive();
+          const key = el.dataset.key;
+          document.querySelectorAll(`[data-key="${key}"]`)
+            .forEach(target => target.classList.add("active"));
+        });
+      });
   });
 </script>
   <!--↑自作↑-->
