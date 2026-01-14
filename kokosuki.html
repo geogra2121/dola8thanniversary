@@ -16,6 +16,7 @@
 <style>
 body { margin: 0; font-family: sans-serif; }
 
+/* サムネイル */
 #thumbnail-bar {
   display: flex;
   gap: 10px;
@@ -34,6 +35,7 @@ body { margin: 0; font-family: sans-serif; }
   cursor: pointer;
 }
 
+/* セクション */
 .section {
   position: relative;
   display: flex;
@@ -43,10 +45,12 @@ body { margin: 0; font-family: sans-serif; }
 
 .image-wrapper {
   width: 50%;
-  position: relative;
 }
 
-.image-wrapper img { width: 100%; }
+.image-wrapper img {
+  width: 100%;
+  display: block;
+}
 
 .comments {
   width: 50%;
@@ -64,6 +68,7 @@ body { margin: 0; font-family: sans-serif; }
   border-left: 4px solid red;
 }
 
+/* SVG */
 .annotation {
   position: absolute;
   inset: 0;
@@ -80,6 +85,14 @@ body { margin: 0; font-family: sans-serif; }
 .annotation polyline.active {
   stroke: red;
   stroke-width: 3;
+}
+
+.annotation circle {
+  fill: #888;
+}
+
+.annotation circle.active {
+  fill: red;
 }
 </style>
 <!--↑自作↑-->
@@ -219,7 +232,6 @@ fetch(GAS_URL)
 
       content.appendChild(sec);
 
-      /* 線描画（描画後に計算） */
       requestAnimationFrame(() => drawLines(sec, section));
     });
 
@@ -236,32 +248,53 @@ fetch(GAS_URL)
 
 function drawLines(sectionEl, sectionData) {
   const svg = sectionEl.querySelector(".annotation");
-  const image = sectionEl.querySelector(".image-wrapper img");
-  const sectionRect = sectionEl.getBoundingClientRect();
-  const imageRect = image.getBoundingClientRect();
+  const img = sectionEl.querySelector(".image-wrapper img");
 
-  svg.setAttribute("viewBox", `0 0 ${sectionRect.width} ${sectionRect.height}`);
+  const sectionRect = sectionEl.getBoundingClientRect();
+  const imgRect = img.getBoundingClientRect();
+
+  svg.setAttribute(
+    "viewBox",
+    `0 0 ${sectionRect.width} ${sectionRect.height}`
+  );
 
   sectionData.comments.forEach((c, i) => {
-    const commentEl = sectionEl.querySelector(`.comment[data-key="${sectionData.id}-${i}"]`);
+    const key = `${sectionData.id}-${i}`;
+    const commentEl = sectionEl.querySelector(`.comment[data-key="${key}"]`);
     const commentRect = commentEl.getBoundingClientRect();
 
-    const sx = imageRect.left + imageRect.width * (c.x / 100) - sectionRect.left;
-    const sy = imageRect.top  + imageRect.height * (c.y / 100) - sectionRect.top;
+    /* 始点（画像指定位置） */
+    const sx = imgRect.left
+      + imgRect.width * (c.x / 100)
+      - sectionRect.left;
 
+    const sy = imgRect.top
+      + imgRect.height * (c.y / 100)
+      - sectionRect.top;
+
+    /* 終点（コメント左中央） */
     const ex = commentRect.left - sectionRect.left;
     const ey = commentRect.top + commentRect.height / 2 - sectionRect.top;
 
     const midX = (sx + ex) / 2;
 
+    /* 折れ線 */
     const polyline = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
-    polyline.dataset.key = `${sectionData.id}-${i}`;
+    polyline.dataset.key = key;
     polyline.setAttribute(
       "points",
       `${sx},${sy} ${midX},${sy} ${midX},${ey} ${ex},${ey}`
     );
 
+    /* 先端の丸（画像側） */
+    const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    circle.dataset.key = key;
+    circle.setAttribute("cx", sx);
+    circle.setAttribute("cy", sy);
+    circle.setAttribute("r", 4);
+
     svg.appendChild(polyline);
+    svg.appendChild(circle);
   });
 }
 </script>
