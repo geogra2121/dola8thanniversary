@@ -18,9 +18,10 @@ body { margin: 0; font-family: sans-serif; }
 
 /* サムネイル */
 #thumbnail-bar {
-  display: flex;
-  gap: 10px;
-  padding: 10px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4列 */
+  gap: 8px;
+  padding: 8px;
   height: 80px;
   border-bottom: 1px solid #ccc;
   position: sticky;
@@ -31,8 +32,15 @@ body { margin: 0; font-family: sans-serif; }
 
 @media screen and (max-width: 768px) {
   #thumbnail-bar {
-    top: 80px;   /* スマホ用 menubar 高さ */
+    grid-template-columns: repeat(3, 1fr);
   }
+}
+
+.thumbnail {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  cursor: pointer;
 }
 
 #thumbnail-bar img {
@@ -110,6 +118,17 @@ body { margin: 0; font-family: sans-serif; }
 
 .annotation circle.active {
   fill: red;
+}
+
+:root {
+  --menubar-height: 60px;
+  --thumbnail-height: 160px; /* 2行分 */
+}
+
+.section {
+  scroll-margin-top: calc(
+    var(--menubar-height) + var(--thumbnail-height) + 10px
+  );
 }
 </style>
 <!--↑自作↑-->
