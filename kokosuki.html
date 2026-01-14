@@ -24,9 +24,15 @@ body { margin: 0; font-family: sans-serif; }
   height: 80px;
   border-bottom: 1px solid #ccc;
   position: sticky;
-  top: 60px;
+  top: 0px;
   background: #fff;
   z-index: 500;
+}
+
+@media screen and (max-width: 768px) {
+  #thumbnail-bar {
+    top: 80px;   /* スマホ用 menubar 高さ */
+  }
 }
 
 #thumbnail-bar img {
