@@ -120,16 +120,24 @@ body { margin: 0; font-family: sans-serif; }
   fill: red;
 }
 
+/*
 :root {
   --menubar-height: 60px;
-  --thumbnail-height: 160px; /* 2行分 */
+  --thumbnail-height: 80px;
 }
-
+*/
+/*
 .section {
   scroll-margin-top: calc(
-    var(--menubar-height) + var(--thumbnail-height) - 10px
+    var(--menubar-height) + var(--thumbnail-height)
   );
 }
+*/
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: var(--scroll-offset, 0px);
+}
+
 </style>
 <!--↑自作↑-->
 
@@ -333,6 +341,30 @@ function drawLines(sectionEl, sectionData) {
     svg.appendChild(circle);
   });
 }
+</script>
+
+<script>
+function updateScrollOffset() {
+  const menubar = document.getElementById('menubar');
+  const thumbnail = document.getElementById('thumbnail-bar');
+
+  const offset =
+    (menubar?.offsetHeight || 0) +
+    (thumbnail?.offsetHeight || 0);
+
+  document.documentElement.style
+    .setProperty('--scroll-offset', offset + 'px');
+}
+
+// 初期化
+updateScrollOffset();
+
+// 画面サイズ変更（PC⇄スマホ）
+window.addEventListener('resize', updateScrollOffset);
+
+// サムネイル行数が変わる場合に対応（重要）
+new ResizeObserver(updateScrollOffset)
+  .observe(document.getElementById('thumbnail-bar'));
 </script>
   <!--↑自作↑-->
 </body>
