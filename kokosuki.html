@@ -26,7 +26,7 @@ body { margin: 0; font-family: sans-serif; }
   position: sticky;
   top: 0;
   background: #fff;
-  z-index: 100;
+  z-index: 500;
 }
 
 #thumbnail-bar img {
@@ -34,6 +34,13 @@ body { margin: 0; font-family: sans-serif; }
   width: auto;
   object-fit: contain;
   cursor: pointer;
+}
+
+#menubar {
+  position: sticky;   /* または fixed */
+  top: 0;
+  z-index: 1000;      /* ← 画像一覧より大きく */
+  background: #fff;
 }
 
 /* セクション */
