@@ -213,7 +213,7 @@ main h3 {
 	padding-top: 80px;
 	background: rgba(0,0,0,0.8);		/*背景色*/
 	animation: animation1 0.2s both;	/*animation1を実行する。0.2sは0.2秒の事。*/
-	z-index: 1000;
+	z-index: 999;
 }
 .small-screen #menubar ul {
 	margin: 3rem;	/*メニューブロックの外側に空けるスペース*/
@@ -237,6 +237,7 @@ main h3 {
 	flex-direction: column;			/*子要素（３本バー）部分。flexはデフォルトで横並びになるので、それを縦並びに変更。*/
 	justify-content: space-between;	/*並びかたの種類の指定*/
 	background: #d30c44;	/*背景色*/
+	z-index: 1000;
 }
 
 /*バー１本あたりの設定*/
